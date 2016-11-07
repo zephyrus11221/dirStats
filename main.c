@@ -11,8 +11,20 @@
 
 int main(){
   DIR *hold = opendir(".");
-  while (hold){
-    printf("%s\n",readdir(hold)->d_name);
+  struct dirent *cur=readdir(hold);
+  int dSize = 0;
+  struct stat *buff;
+  while (cur){
+    printf("%s",cur->d_name);
+    if(cur->d_type == DT_DIR){
+      printf(" <directory>")
+    }
+    stat(cur->d_name, buff);
+    printf("\n");
+    dSize += buff->st_size;
+    cur = readdir(hold);
   }
+  printf("%d", dSize)
+  printf("%s\n",strerror(errno));
   return 21;
 }
